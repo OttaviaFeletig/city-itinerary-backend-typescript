@@ -9,13 +9,19 @@ app.use(
     extended: true
   })
 );
-mongoose
-  .connect(db, { useNewUrlParser: true, useCreateIndex: true })
-  .then(() => console.log("connected!"));
-// .catch((err) => console.log(err));
+mongoose.connect(db, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+});
+try {
+  console.log("connected!");
+} catch (err) {
+  console.log(err);
+}
 app.use(bodyParser.json());
 app.use("/api/cities", cityRoute);
 
 app.listen(5000, function() {
-  console.log("Example app listening on port 5000!");
+  console.log("App listening on port 5000!");
 });
