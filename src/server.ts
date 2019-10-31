@@ -9,19 +9,30 @@ app.use(
     extended: true
   })
 );
-mongoose.connect(db, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-});
-try {
-  console.log("connected!");
-} catch (err) {
-  console.log(err);
-}
 app.use(bodyParser.json());
+
+const connect = async () => {
+  try {
+    const res = await mongoose.connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    });
+    return res;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
 app.use("/api/cities", cityRoute);
 
-app.listen(5000, function() {
-  console.log("App listening on port 5000!");
-});
+const listen = async () => {
+  var test = await connect();
+  if (test !== undefined) {
+    console.log("connected");
+    app.listen(5000, function() {
+      console.log("App listening on port 5000!");
+    });
+  }
+};
+listen();
