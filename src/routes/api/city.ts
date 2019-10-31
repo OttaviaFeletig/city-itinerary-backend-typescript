@@ -3,7 +3,6 @@ const router: express.Router = express.Router();
 const City = require("../../models/City");
 import { CityI } from "../../types/City";
 import CitySchemaData from "../../models/City";
-import { Long } from "bson";
 import { Dictionary } from "express-serve-static-core";
 router.get("/test", (req, res) => res.send("Testing city route"));
 router.post("/", async (req, res) => {
@@ -37,7 +36,6 @@ router.get("/", async (req, res) => {
     res.status(500).send(error);
   }
 });
-
 router.get("/:id", async (req, res) => {
   const { id }: Dictionary<string> = req.params;
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -53,7 +51,28 @@ router.get("/:id", async (req, res) => {
       res.status(500).send(error);
     }
   } else {
-    res.status(404).send("ID Not Valid");
+    res.status(400).send("ID Not Valid");
+  }
+});
+router.patch("/:id", async (req, res) => {
+  const { id }: Dictionary<string> = req.params;
+  const city: CityI = req.body;
+  if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    try {
+      const updatedCity: CityI = await City.findByIdAndUpdate(id, city, {
+        new: true,
+        runValidators: true
+      });
+      if (!updatedCity) {
+        res.status(400).send("City Not Found");
+      } else {
+        res.status(200).send(updatedCity);
+      }
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  } else {
+    res.status(400).send("ID Not Valid");
   }
 });
 module.exports = router;
