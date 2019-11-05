@@ -4,7 +4,7 @@ const City = require("../../models/City");
 import { CityI } from "../../types/City";
 import CitySchemaData from "../../models/City";
 import { Dictionary } from "express-serve-static-core";
-router.get("/test", (req, res) => res.send("Testing city route"));
+// POST NEW CITY
 router.post("/", async (req, res) => {
   const { name, country, picture }: CityI = req.body;
   try {
@@ -28,6 +28,7 @@ router.post("/", async (req, res) => {
     res.status(500).send(error);
   }
 });
+// GET ALL CITIES
 router.get("/", async (req, res) => {
   try {
     const cities: Array<CityI> = await City.find({});
@@ -36,6 +37,7 @@ router.get("/", async (req, res) => {
     res.status(500).send(error);
   }
 });
+// GET SPECIFIC CITY
 router.get("/:id", async (req, res) => {
   const { id }: Dictionary<string> = req.params;
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -54,6 +56,7 @@ router.get("/:id", async (req, res) => {
     res.status(400).send("ID Not Valid");
   }
 });
+// UPDATE CITY
 router.patch("/:id", async (req, res) => {
   const { id }: Dictionary<string> = req.params;
   const city: CityI = req.body;
@@ -67,6 +70,24 @@ router.patch("/:id", async (req, res) => {
         res.status(400).send("City Not Found");
       } else {
         res.status(200).send(updatedCity);
+      }
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  } else {
+    res.status(400).send("ID Not Valid");
+  }
+});
+//DELETE CITY
+router.delete("/:id", async (req, res) => {
+  const { id }: Dictionary<string> = req.params;
+  if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    try {
+      const deletedCity: CityI = await City.findByIdAndDelete(id);
+      if (!deletedCity) {
+        res.status(400).send("City Not Found");
+      } else {
+        res.status(200).send(deletedCity);
       }
     } catch (error) {
       res.status(500).send(error);
