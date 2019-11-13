@@ -4,12 +4,14 @@ const bodyParser = require("body-parser");
 const cityRoute: express.Router = require("./routes/api/city");
 const mongoose = require("mongoose");
 const db = require("./config/keys").mongoURI;
+const cors = require("cors");
 app.use(
   bodyParser.urlencoded({
     extended: true
   })
 );
 app.use(bodyParser.json());
+app.use(cors());
 
 const connect = async () => {
   try {
