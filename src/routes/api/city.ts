@@ -7,11 +7,13 @@ import { Dictionary } from "express-serve-static-core";
 // POST NEW CITY
 router.post("/", async (req, res) => {
   const { name, country, picture }: CityI = req.body;
+  console.log("req.body", req.body);
   try {
     const cityDB: CityI = await City.findOne({ name: name, country: country });
     if (cityDB) {
       res.status(409).send("Conflict: City Already In DB");
     } else {
+      console.log("picture", picture);
       const newCity: CitySchemaData = new City({
         name: name,
         country: country,

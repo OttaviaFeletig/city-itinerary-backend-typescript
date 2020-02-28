@@ -5,6 +5,7 @@ const cityRoute: express.Router = require("./routes/api/city");
 const mongoose = require("mongoose");
 const db = require("./config/keys").mongoURI;
 const cors = require("cors");
+
 app.use(
   bodyParser.urlencoded({
     extended: true
