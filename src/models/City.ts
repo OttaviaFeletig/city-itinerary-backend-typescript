@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export default interface CitySchemaData extends Document {
   name: string;
   country: string;
-  picture: string;
+  // picture: string;
 }
 const City: Schema = new Schema({
   name: {
@@ -13,11 +13,11 @@ const City: Schema = new Schema({
   country: {
     type: String,
     required: true
-  },
-  picture: {
-    type: String,
-    required: true
   }
+  // picture: {
+  //   type: String,
+  //   required: true
+  // }
 });
 
 module.exports = mongoose.model<CitySchemaData>("city", City);

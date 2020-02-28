@@ -1,7 +1,7 @@
 import express = require("express");
 const app: express.Application = express();
 const bodyParser = require("body-parser");
-const cityRoute: express.Router = require("./routes/api/city");
+const eventRoute: express.Router = require("./routes/api/event");
 const mongoose = require("mongoose");
 const db = require("./config/keys").mongoURI;
 const cors = require("cors");
@@ -28,7 +28,7 @@ const connect = async () => {
   }
 };
 
-app.use("/api/cities", cityRoute);
+app.use("/api/events", eventRoute);
 
 const listen = async () => {
   var test = await connect();
